@@ -10,9 +10,8 @@ import reactor.core.publisher.Flux
 import java.time.Duration
 import java.time.LocalTime
 
-
 @RestController
-@RequestMapping("/sse-server")
+@RequestMapping("/sse")
 class SSEController {
 
     @GetMapping
