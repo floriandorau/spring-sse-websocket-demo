@@ -1,25 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import {useEffect, useState} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [state, setState] = useState(null)
+    const [currentTime, setCurrentTime] = useState(null)
+    const [eventSource, setEventSource] = useState(null)
+
+    useEffect(() => {
+        const handleEvent = (e) => setCurrentTime(e.data)
+        const es = new EventSource("http://localhost:8080/sse/stream-sse");
+
+        es.onopen = (e) => setState(e.type)
+        es.onerror = (event) => {
+            if (event.eventPhase === EventSource.CLOSED) {
+                setState("EventSource closed by server")
+            } else {
+                setState("EventSource error")
+            }
+            es.close();
+        }
+        es.addEventListener('time-event', handleEvent)
+
+        setEventSource(es)
+
+        return () => es.close();
+    }, [])
+
+    return (
+        <div className="App">
+            <header className="App-header">
+                <div>
+                    <div>Status: <span>{state}</span></div>
+                    <div>{currentTime}</div>
+                    <div>
+                        <button onClick={() => eventSource.close()}>Stop</button>
+                    </div>
+                </div>
+            </header>
+        </div>
+    );
 }
 
 export default App;
