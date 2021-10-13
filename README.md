@@ -1,5 +1,7 @@
 # spring-sse-websocket-demo
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=floriandorau_spring-sse-websocket-demo&metric=alert_status)](https://sonarcloud.io/dashboard?id=floriandorau_spring-sse-websocket-demo)
+
 ## Usage
 
 Open one of the following Urls in you favorite browser
